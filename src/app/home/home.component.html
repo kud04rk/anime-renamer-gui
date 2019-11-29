@@ -1,5 +1,81 @@
-<div class="container">
-  <h1 class="title">
-    {{ 'PAGES.HOME.TITLE' | translate }}
-  </h1>
-</div>
+<nav class="navbar is-light" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <div class="navbar-item">
+      <img src="/assets/logo1.png" alt="A robust anime renamer" width="70" height="90">
+    </div>
+    <div class="navbar-item">
+      <h4 class="title is-4">
+        Anime Renamer
+      </h4>
+    </div>
+  </div>
+</nav>
+<section class="hero is-fullheight-with-navbar">
+  <section class="section">
+  <div class="container">
+      <article class="media">
+        <div class="media-content">
+          <div class="field">
+            <div class="control">
+              <input class="input is-primary" type="text"
+                placeholder="Enter the name of the Series/Anime(be presise Naruto,One Piece etc.)">
+            </div>
+          </div>
+
+        </div>
+        <div class="media-right">
+          <button class="button is-info" (click)="get_namer()">Submit</button>
+        </div>
+      </article>
+      <br>
+      <article class="media">
+        <div class="media-content">
+          <div class="field">
+            <div class="control">
+              <input class="input is-primary" type="text"
+                placeholder="Select the base directory of the series">
+            </div>
+          </div>
+        </div>
+        <div class="media-right">
+          <button class="button is-info" (click)="get_location()">Submit</button>
+        </div>
+      </article>
+
+      </div>
+      <br>
+    <div class="container">
+
+      <div class="columns">
+        <div class="column is-one-fifths">
+          <button class="button is-warning" onclick="get_location()">Prepare</button>
+        </div>
+        <div class="column is-one-fifths">
+          <button class="button is-info" onclick="get_location()">Remove</button>
+        </div>
+        <div class="column is-one-fifths">
+          <button class="button is-link" onclick="get_location()">Rename</button>
+        </div>
+        <div class="column is-one-fifths">
+          <button class="button is-primary" onclick="get_location()">Organize</button>
+        </div>
+        <div class="column is-one-fifths">
+          <button class="button is-success" onclick="get_location()">Download</button>
+        </div>
+
+    </div>
+    </div>
+    <br>
+      <div class="table-container">
+        <table class="table is-striped is-fullwidth">
+          <thead>
+            <tr>
+              <th>Before</th>
+              <th>></th>
+              <th>After</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+  </section>
+</section>

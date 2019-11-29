@@ -1,6 +1,7 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, ipcMain, remote } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import * as fs from "fs";
 
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
@@ -79,3 +80,71 @@ try {
   // Catch Error
   // throw e;
 }
+
+
+function sendvalidfiles(path) {
+  process.chdir(path);
+  const cwd = process.cwd();
+  fs.readdir('.', {withFileTypes: true}, (err, files) => {
+    if (!err) {
+        const re = /(?:\.([^.]+))?$/;
+        const videos = files
+          .filter(file => file.isFile() && ['mkv', 'mp4', 'avi', 'flv', 'mpg', 'mpeg', 'wmv', 'webm', 'vob', 'mov', '3gp', 'ogv'].includes(re.exec(file.name)[1]))
+          .map(file => `${file.name}`);
+        win.webContents.send("getvalidvideo", videos);
+    }
+});
+}
+
+function opendialog() {
+const {dialog} = require('electron');
+
+  dialog.showOpenDialog(win, {
+    properties: ['openDirectory']
+  }).then(result => {
+    console.log(result.canceled);
+    win.webContents.send('selecteddir', result.filePaths);
+    console.log(result.filePaths);
+    sendvalidfiles(result.filePaths[0]);
+  }).catch(err => {
+    console.log(err)
+  })
+
+}
+
+ipcMain.on("opendialog", (event) => {
+  opendialog();
+});
+
+function selectanime() {
+  console.log('anime selector');
+  let selwin= new BrowserWindow({width:800 , height:600,webPreferences: {
+    nodeIntegration: true,
+    allowRunningInsecureContent: (serve) ? true : false,
+  },});
+  if(serve){
+    require('electron-reload')(__dirname, {
+      electron: require(`${__dirname}/node_modules/electron`)
+    });
+    selwin.loadURL('http://localhost:4200/#/selector');
+  }
+  else{
+  selwin.loadURL(url.format({
+    pathname: path.join(__dirname, 'dist/index.html#/selector'),
+    protocol: 'file:',
+    slashes: true
+  }));
+}
+if(serve){
+  selwin.webContents.openDevTools();}
+}
+
+ipcMain.on('openselector', (event) => {
+  selectanime();
+});
+
+
+
+
+
+
