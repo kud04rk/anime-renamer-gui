@@ -116,7 +116,10 @@ ipcMain.on("opendialog", (event) => {
   opendialog();
 });
 
-function selectanime() {
+
+let {PythonShell} = require('python-shell')
+
+function selectanime(anime) {
   console.log('anime selector');
   let selwin= new BrowserWindow({width:800 , height:600,webPreferences: {
     nodeIntegration: true,
@@ -135,12 +138,22 @@ function selectanime() {
     slashes: true
   }));
 }
+var options = {
+  scriptPath : path.join(__dirname, '/backend/'),
+  args : [anime]
+}
+
+let pyshell = new PythonShell('start.py', options);
+
+pyshell.on('message', function(message) {
+  selwin.webContents.send("animelist", message);
+})
 if(serve){
   selwin.webContents.openDevTools();}
 }
 
-ipcMain.on('openselector', (event) => {
-  selectanime();
+ipcMain.on('openselector', (event,anime) => {
+  selectanime(anime);
 });
 
 

@@ -1,5 +1,7 @@
 import { WindowService } from './../shared/window.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {  FormGroup,  Validators, FormBuilder} from '@angular/forms';
+
 
 @Component({
   selector: 'app-home',
@@ -9,10 +11,12 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 export class HomeComponent implements OnInit {
   directory: string;
   validvideos: string[];
+  selectanime: FormGroup;
 
-  constructor( private window: WindowService, private cdr: ChangeDetectorRef ) { }
+  constructor( private window: WindowService, private cdr: ChangeDetectorRef, private fblogin: FormBuilder ) { }
 
   ngOnInit(): void {
+    this.resetForm();
     this.window.directory.subscribe((value) => {
       this.directory = value[0];
       console.log(this.directory);
@@ -25,14 +29,20 @@ export class HomeComponent implements OnInit {
       this.cdr.detectChanges();
     });
    }
+  resetForm() {
+    this.selectanime = this.fblogin.group({
+      animename: ['', Validators.required]
+    });
+  }
 
 
   get_location() {
     this.window.opendialog();
     }
 
-    get_namer() {
-      this.window.selectanime();
+    get_namer(name) {
+      console.log(name);
+      this.window.selectanime(name);
     }
 
 }

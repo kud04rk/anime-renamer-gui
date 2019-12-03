@@ -8,6 +8,8 @@ const electron = (<any>window).require('electron');
 export class WindowService {
   directory = new BehaviorSubject<string[]>([]);
   videos = new BehaviorSubject<string[]>([]);
+  animelist = new BehaviorSubject<any[]>([{'seriesName':'test','banner':'/banners/posters/78857-1.jpg','overview':'testoverview'}]);
+  animename;
 
   constructor() {
     electron.ipcRenderer.once('selecteddir', (event, location) => {
@@ -16,7 +18,10 @@ export class WindowService {
 
     electron.ipcRenderer.on('getvalidvideo', (event, validvideos) => {
       this.videos.next(validvideos);
-      console.log(validvideos);
+    });
+
+    electron.ipcRenderer.on('animelist', (event, anime) => {
+      this.animelist.next(JSON.parse(anime));
     });
   }
 
@@ -24,9 +29,11 @@ export class WindowService {
     electron.ipcRenderer.send('opendialog');
   }
 
-  selectanime() {
+  selectanime(animename) {
     electron.ipcRenderer.send('openselector');
   }
+
+
 }
 
 

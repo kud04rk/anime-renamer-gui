@@ -1,24 +1,27 @@
 <section class="section">
   <div class="contanier">
-    <div class="box" (click)=selectedanime()>
+  <div *ngFor="let anime of listanime">
+     <div class="box" (click)=selectedanime()>
+     <div class="container">
       <article class="media">
         <figure class="media-left">
-          <p class="image is-64x64">
-            <img src="https://bulma.io/images/placeholders/128x128.png">
+          <p class="image is-128x128 is-3by4">
+            <img src="https://www.thetvdb.com{{anime.banner}}">
           </p>
         </figure>
         <div class="media-content">
           <div class="content">
-            <p>
-              <strong>name</strong>
-              <br>
-              overview
-            </p>
+          <h3 class="title is-3">{{anime.seriesName}}</h3>
+
+              <p class="subtitle is-6">{{anime.overview}}</p>
           </div>
         </div>
         <div class="media-right">
         </div>
       </article>
     </div>
+    </div>
+    <br>
+  </div>
   </div>
 </section>

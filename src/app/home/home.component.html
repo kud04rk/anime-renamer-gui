@@ -12,28 +12,28 @@
 </nav>
 <section class="hero is-fullheight-with-navbar">
   <section class="section">
-  <div class="container">
-      <article class="media">
-        <div class="media-content">
-          <div class="field">
-            <div class="control">
-              <input class="input is-primary" type="text"
-                placeholder="Enter the name of the Series/Anime(be presise Naruto,One Piece etc.)">
-            </div>
-          </div>
+    <div class="container">
+        <form [formGroup]="selectanime" (ngSubmit)="get_namer(selectanime.value)">
+        <article class="media">
+          <div class="media-content">
+            <input formControlName="animename" class="input is-primary" type="text"
+              placeholder="Enter the name of the Series/Anime(be presise Naruto,One Piece etc.)"
+              [ngClass]="{'is-danger' : ((selectanime.get('animename').errors) && (selectanime.get('animename').touched || selectanime.get('animename').dirty))}">
 
-        </div>
-        <div class="media-right">
-          <button class="button is-info" (click)="get_namer()">Submit</button>
-        </div>
-      </article>
+
+          </div>
+          <div class="media-right">
+            <button type="submit" class="button is-info">Search</button>
+          </div>
+          </article>
+        </form>
+
       <br>
       <article class="media">
         <div class="media-content">
           <div class="field">
             <div class="control">
-              <input class="input is-primary" type="text"
-                placeholder="Select the base directory of the series">
+              <input class="input is-primary" type="text" placeholder="Select the base directory of the series">
             </div>
           </div>
         </div>
@@ -42,8 +42,8 @@
         </div>
       </article>
 
-      </div>
-      <br>
+    </div>
+    <br>
     <div class="container">
 
       <div class="columns">
@@ -63,19 +63,19 @@
           <button class="button is-success" onclick="get_location()">Download</button>
         </div>
 
-    </div>
+      </div>
     </div>
     <br>
-      <div class="table-container">
-        <table class="table is-striped is-fullwidth">
-          <thead>
-            <tr>
-              <th>Before</th>
-              <th>></th>
-              <th>After</th>
-            </tr>
-          </thead>
-        </table>
-      </div>
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth">
+        <thead>
+          <tr>
+            <th>Before</th>
+            <th>></th>
+            <th>After</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
   </section>
 </section>
