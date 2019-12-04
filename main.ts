@@ -4,6 +4,8 @@ import * as url from 'url';
 import * as fs from "fs";
 
 let win: BrowserWindow = null;
+let selwin: BrowserWindow = null;
+
 const args = process.argv.slice(1),
     serve = args.some(val => val === '--serve');
 
@@ -121,7 +123,8 @@ let {PythonShell} = require('python-shell')
 
 function selectanime(anime) {
   console.log('anime selector');
-  let selwin= new BrowserWindow({width:800 , height:600,webPreferences: {
+  console.log(anime);
+  selwin= new BrowserWindow({width:800 , height:600,webPreferences: {
     nodeIntegration: true,
     allowRunningInsecureContent: (serve) ? true : false,
   },});
@@ -152,8 +155,18 @@ if(serve){
   selwin.webContents.openDevTools();}
 }
 
+function closewindow() {
+  selwin.close();
+}
+
 ipcMain.on('openselector', (event,anime) => {
   selectanime(anime);
+});
+
+ipcMain.on('id', (event,seriesid) => {
+  console.log(seriesid);
+  win.webContents.send("seriesid", seriesid);
+  closewindow();
 });
 
 

@@ -1,5 +1,6 @@
 import { WindowService } from './../shared/window.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { removeSummaryDuplicates } from '@angular/compiler';
 
 @Component({
   selector: 'app-selectanime',
@@ -8,7 +9,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 })
 export class SelectanimeComponent implements OnInit {
   listanime: any [];
-  imgsrc='https://www.thetvdb.com/';
+  seriesid;
 
   constructor(private window: WindowService,  private cdr: ChangeDetectorRef) { }
 
@@ -18,6 +19,15 @@ export class SelectanimeComponent implements OnInit {
       console.log(this.listanime);
       this.cdr.detectChanges();
   });
+  this.window.seriesidobs.asObservable().subscribe(res => {
+    console.log(res);
+  });
+}
+selectedanime(index) {
+  this.seriesid=this.listanime[index].id;
+  console.log(this.seriesid);
+  this.window.sendid(this.seriesid);
+
 }
 
 

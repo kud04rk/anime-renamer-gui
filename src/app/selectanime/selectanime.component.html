@@ -1,7 +1,7 @@
 <section class="section">
   <div class="contanier">
-  <div *ngFor="let anime of listanime">
-     <div class="box" (click)=selectedanime()>
+  <div *ngFor="let anime of listanime; let i = index" class="animated fadeInUp">
+     <div class="box" (click)=selectedanime(i)>
      <div class="container">
       <article class="media">
         <figure class="media-left">
@@ -11,9 +11,10 @@
         </figure>
         <div class="media-content">
           <div class="content">
-          <h3 class="title is-3">{{anime.seriesName}}</h3>
+          <h3 class="title is-3">{{anime.seriesName}} - {{anime.id}}</h3>
 
               <p class="subtitle is-6">{{anime.overview}}</p>
+
           </div>
         </div>
         <div class="media-right">

@@ -8,8 +8,15 @@ image_basepath = 'https://www.thetvdb.com/banners/'
 def main(series_name):
     search = tvdb.Search()
     matched_names = search.series(series_name)
-    y = json.dumps(matched_names)
-    print(y)
+    valid = []
+    invalid = []
+    for series in matched_names:
+        if 'overview' not in series:
+            invalid.append(series)
+        else:
+            valid.append(series)
+
+    print(json.dumps(valid))
 
 
 if len(sys.argv) > 1:

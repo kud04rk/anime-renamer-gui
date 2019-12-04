@@ -9,17 +9,21 @@ import {  FormGroup,  Validators, FormBuilder} from '@angular/forms';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  directory: string;
+  directory='';
   validvideos: string[];
   selectanime: FormGroup;
+  dispanime='';
+  seriesid=0;
+  disbale=false;
 
   constructor( private window: WindowService, private cdr: ChangeDetectorRef, private fblogin: FormBuilder ) { }
 
   ngOnInit(): void {
     this.resetForm();
     this.window.directory.subscribe((value) => {
-      this.directory = value[0];
+      this.directory = value;
       console.log(this.directory);
+      this.disbale=true;
       this.cdr.detectChanges();
     });
 
@@ -28,7 +32,19 @@ export class HomeComponent implements OnInit {
       console.log(this.validvideos);
       this.cdr.detectChanges();
     });
+    this.window.seriesidobs.asObservable().subscribe((result) => {
+      console.log(result);
+      this.seriesid=result;
+      if(result==0){
+        this.dispanime='';
+      }
+      else{
+        this.dispanime=result.toString();
+      }
+      this.cdr.detectChanges();
+    });
    }
+
   resetForm() {
     this.selectanime = this.fblogin.group({
       animename: ['', Validators.required]
@@ -42,7 +58,24 @@ export class HomeComponent implements OnInit {
 
     get_namer(name) {
       console.log(name);
-      this.window.selectanime(name);
+      this.dispanime=name.animename;
+      this.window.selectanime(name.animename);
+    }
+
+    prepare(){
+
+    }
+    remove(){
+
+    }
+    rename() {
+
+    }
+    organize() {
+
+    }
+    download() {
+      
     }
 
 }
