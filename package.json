@@ -90,6 +90,8 @@
     "node": ">=10.9.0"
   },
   "dependencies": {
+    "@angular/animations": "8.2.14",
+    "ngx-toastr": "11.2.1",
     "python-shell": "1.0.8"
   }
 }

@@ -159,6 +159,67 @@ function closewindow() {
   selwin.close();
 }
 
+function runrenamer(seriesid) {
+  var options = {
+    scriptPath : path.join(__dirname, '/backend/'),
+    args : [seriesid]
+  }
+
+  let pyshell = new PythonShell('reanmer.py', options);
+
+  pyshell.on('message', function(message) {
+    selwin.webContents.send("renamerres", message);
+  })
+}
+
+function runprepare() {
+  var options = {
+    scriptPath : path.join(__dirname, '/backend/')
+  }
+
+  let pyshell = new PythonShell('reanmer.py', options);
+
+  pyshell.on('message', function(message) {
+    selwin.webContents.send("renamerres", message);
+  })
+}
+function runremover(subtext) {
+  var options = {
+    scriptPath : path.join(__dirname, '/backend/'),
+    args : [subtext]
+  }
+
+  let pyshell = new PythonShell('reanmer.py', options);
+
+  pyshell.on('message', function(message) {
+    selwin.webContents.send("renamerres", message);
+  })
+}
+function runorganizer() {
+  var options = {
+    scriptPath : path.join(__dirname, '/backend/')
+  }
+
+  let pyshell = new PythonShell('reanmer.py', options);
+
+  pyshell.on('message', function(message) {
+    selwin.webContents.send("renamerres", message);
+  })
+}
+function rundownload(seriesid) {
+  var options = {
+    scriptPath : path.join(__dirname, '/backend/'),
+    args : [seriesid]
+  }
+
+  let pyshell = new PythonShell('reanmer.py', options);
+
+  pyshell.on('message', function(message) {
+    selwin.webContents.send("renamerres", message);
+  })
+}
+
+
 ipcMain.on('openselector', (event,anime) => {
   selectanime(anime);
 });
@@ -168,6 +229,25 @@ ipcMain.on('id', (event,seriesid) => {
   win.webContents.send("seriesid", seriesid);
   closewindow();
 });
+
+ipcMain.on('prepare', (event) => {
+  runprepare();
+});
+ipcMain.on('remover', (event,subtext) => {
+  runremover(subtext);
+});
+
+ipcMain.on('rename', (event,seriesid) => {
+  runrenamer(seriesid);
+});
+ipcMain.on('organize', (event) => {
+  runorganizer();
+});
+ipcMain.on('download', (event,seriesid) => {
+  rundownload(seriesid);
+});
+
+
 
 
 

@@ -9,6 +9,12 @@
       </h4>
     </div>
   </div>
+  <div class="navbar-end">
+    <div class="navbar-item">
+      <button class="button is-link is-light" (click)="helptoggle()"><i class="far fa-question-circle"></i>
+        <strong>Help</strong></button>
+    </div>
+  </div>
 </nav>
 <section class="hero is-fullheight-with-navbar">
   <section class="section">
@@ -19,7 +25,6 @@
             <input formControlName="animename" class="input is-primary" type="text" [value]="dispanime"
               placeholder="Enter the name of the Series/Anime(be presise Naruto,One Piece etc.)"
               [ngClass]="{'is-danger' : (selectanime.get('animename').errors?.required && (selectanime.get('animename').touched || selectanime.get('animename').dirty))}">
-
           </div>
           <div class="media-right">
             <button type="submit" [disabled]="selectanime.invalid" class="button is-info">Search</button>
@@ -32,13 +37,12 @@
         <div class="media-content">
           <div class="field">
             <div class="control">
-              <input class="input is-primary" type="text" [value]="directory" readonly
-                placeholder="Select the base directory of the series">
+              <input class="input is-primary" type="text" [value]="directory" readonly placeholder="Locaton of anime">
             </div>
           </div>
         </div>
         <div class="media-right">
-          <button class="button is-info" (click)="get_location()">Select Directory</button>
+          <button class="button is-info" (click)="get_location()">Browse</button>
         </div>
       </article>
 
@@ -48,19 +52,25 @@
 
       <div class="columns">
         <div class="column is-one-fifths">
-          <button class="button is-warning" onclick="prepare()">Prepare</button>
+          <button class="button is-warning is-light" [disabled]="disabledbuttons" (click)="prepare()">Prepare</button>
+          <p class="has-text-warning is-light" [hidden]="help">Copy files from subfolders to main folder</p>
         </div>
         <div class="column is-one-fifths">
-          <button class="button is-info" onclick="remove()">Remove</button>
+          <button class="button is-info is-light" [disabled]="disabledbuttons" (click)="remove()">Remove</button>
+          <p class="has-text-info is-light" [hidden]="help">Remove strings from filename to make leave only episode
+            number</p>
         </div>
         <div class="column is-one-fifths">
-          <button class="button is-link" onclick="rename()">Rename</button>
+          <button class="button is-link is-light" [disabled]="disabledbuttons" (click)="rename()">Rename</button>
+          <p class="has-text-link is-light" [hidden]="help">Renames files in the folder</p>
         </div>
         <div class="column is-one-fifths">
-          <button class="button is-primary" onclick="organize()">Organize</button>
+          <button class="button is-primary is-light" [disabled]="disabledbuttons" (click)="organize()">Organize</button>
+          <p class="has-text-primary is-light" [hidden]="help">Oraganize files into season folders</p>
         </div>
         <div class="column is-one-fifths">
-          <button class="button is-success" onclick="download()">Download</button>
+          <button class="button is-success is-light" [disabled]="disabledbuttons" (click)="Download()">Download</button>
+          <p class="has-text-success is-light" [hidden]="help">Downloads metadata for anime</p>
         </div>
 
       </div>
@@ -75,15 +85,17 @@
                 <tr>
                   <th>Before - filenames</th>
                 </tr>
-                <tr *ngFor="let filename of validvideos">
-                  <td>{{filename}}</td>
+                <tr *ngFor="let filename of beforefiles">
+                  <td><p [class.has-text-success] ="!filename.isinvalid" [class.is-light] ="!filename.isinvalid" [hidden]="filename.isinvalid">{{filename.filename}}</p>
+                  <p [class.has-text-danger] ="filename.isinvalid" [class.is-light] ="filename.isinvalid" [hidden]="!filename.isinvalid">{{filename.filename}}</p>
+                  </td>
                 </tr>
               </thead>
             </table>
           </div>
         </div>
         <div class="column is-one-fifths">
-        <div class="table-container">
+          <div class="table-container">
             <table class="table is-striped is-fullwidth">
               <thead>
                 <tr>
@@ -94,13 +106,14 @@
                 </tr>
               </thead>
             </table>
-          </div></div>
+          </div>
+        </div>
         <div class="column is-two-fifths">
           <div class="table-container">
             <table class="table is-fullwidth">
               <thead>
                 <tr>
-                  <th>After - filenames</th>
+                  <th>After - filenames(preview)</th>
                 </tr>
                 <tr *ngFor="let filename of validvideos">
                   <td>{{filename}}</td>
@@ -113,3 +126,22 @@
     </div>
   </section>
 </section>
+<div id="remover" class="modal" [class.is-active]="toggleremover">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">
+      <form [formGroup]="removetext" (ngSubmit)="removetextfn(removetext.value)">
+        <article class="media">
+          <div class="media-content">
+            <input formControlName="subtext" class="input is-primary" type="text" placeholder="Enter text to remove"
+              [ngClass]="{'is-danger' : (removetext.get('subtext').errors?.required && (removetext.get('subtext').touched || removetext.get('subtext').dirty))}">
+          </div>
+          <div class="media-right">
+            <button type="submit" [disabled]="removetext.invalid" class="button is-info">Remove</button>
+          </div>
+        </article>
+        </form>
+    </div>
+  </div>
+  <button class="modal-close is-large" (click)="closeremover()" aria-label="close"></button>
+</div>

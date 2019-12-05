@@ -43,8 +43,22 @@ export class WindowService {
     electron.ipcRenderer.send('id',seriesid);
     }
 
+    prepare(){
+      electron.ipcRenderer.send('prepare');
+    }
+    remove(subtext){
+      electron.ipcRenderer.send('remover',subtext);
+    }
+    rename(seriesid) {
+      electron.ipcRenderer.send('rename',seriesid);
+    }
+    organize() {
+      electron.ipcRenderer.send('organize');
+    }
+    download(seriesid) {
+      electron.ipcRenderer.send('download',seriesid);
+    }
+
 
 
 }
-
-
