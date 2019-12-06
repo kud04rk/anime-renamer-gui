@@ -5,6 +5,7 @@ import * as fs from "fs";
 
 let win: BrowserWindow = null;
 let selwin: BrowserWindow = null;
+let {PythonShell} = require('python-shell')
 
 const args = process.argv.slice(1),
     serve = args.some(val => val === '--serve');
@@ -84,21 +85,25 @@ try {
 }
 
 
-function sendvalidfiles(path) {
-  process.chdir(path);
-  const cwd = process.cwd();
-  fs.readdir('.', {withFileTypes: true}, (err, files) => {
-    if (!err) {
-        const re = /(?:\.([^.]+))?$/;
-        const videos = files
-          .filter(file => file.isFile() && ['mkv', 'mp4', 'avi', 'flv', 'mpg', 'mpeg', 'wmv', 'webm', 'vob', 'mov', '3gp', 'ogv'].includes(re.exec(file.name)[1]))
-          .map(file => `${file.name}`);
-        win.webContents.send("getvalidvideo", videos);
-    }
-});
+function sendvalidfiles(seriesid) {
+  var options = {
+    scriptPath : path.join(__dirname, '/backend/'),
+    args : [seriesid]
+  }
+
+  let pyshell = new PythonShell('preview.py', options);
+
+  pyshell.on('message', function(message) {
+    win.webContents.send("getvalidvideo", message);
+  })
 }
 
-function opendialog() {
+function changeworkingdir(path) {
+  process.chdir(path);
+  const cwd = process.cwd();
+}
+
+function opendialog(seriesid) {
 const {dialog} = require('electron');
 
   dialog.showOpenDialog(win, {
@@ -107,19 +112,14 @@ const {dialog} = require('electron');
     console.log(result.canceled);
     win.webContents.send('selecteddir', result.filePaths);
     console.log(result.filePaths);
-    sendvalidfiles(result.filePaths[0]);
+    changeworkingdir(result.filePaths[0]);
+    sendvalidfiles(seriesid);
   }).catch(err => {
     console.log(err)
   })
 
 }
 
-ipcMain.on("opendialog", (event) => {
-  opendialog();
-});
-
-
-let {PythonShell} = require('python-shell')
 
 function selectanime(anime) {
   console.log('anime selector');
@@ -168,42 +168,46 @@ function runrenamer(seriesid) {
   let pyshell = new PythonShell('reanmer.py', options);
 
   pyshell.on('message', function(message) {
-    selwin.webContents.send("renamerres", message);
+    win.webContents.send("functionres", message);
+    sendvalidfiles(seriesid);
   })
 }
 
-function runprepare() {
+function runprepare(seriesid) {
   var options = {
     scriptPath : path.join(__dirname, '/backend/')
   }
 
-  let pyshell = new PythonShell('reanmer.py', options);
+  let pyshell = new PythonShell('prepare.py', options);
 
   pyshell.on('message', function(message) {
-    selwin.webContents.send("renamerres", message);
+    win.webContents.send("functionres", message);
+    sendvalidfiles(seriesid);
   })
 }
-function runremover(subtext) {
+function runremover(subtext,seriesid) {
   var options = {
     scriptPath : path.join(__dirname, '/backend/'),
-    args : [subtext]
+    args : [subtext,seriesid]
   }
 
-  let pyshell = new PythonShell('reanmer.py', options);
+  let pyshell = new PythonShell('remover.py', options);
 
   pyshell.on('message', function(message) {
-    selwin.webContents.send("renamerres", message);
+    win.webContents.send("functionres", message);
+    sendvalidfiles(seriesid)
   })
 }
-function runorganizer() {
+function runorganizer(seriesid) {
   var options = {
     scriptPath : path.join(__dirname, '/backend/')
   }
 
-  let pyshell = new PythonShell('reanmer.py', options);
+  let pyshell = new PythonShell('oraganiser.py', options);
 
   pyshell.on('message', function(message) {
-    selwin.webContents.send("renamerres", message);
+    win.webContents.send("functionres", message);
+    sendvalidfiles(seriesid)
   })
 }
 function rundownload(seriesid) {
@@ -212,13 +216,16 @@ function rundownload(seriesid) {
     args : [seriesid]
   }
 
-  let pyshell = new PythonShell('reanmer.py', options);
+  let pyshell = new PythonShell('downloader.py', options);
 
   pyshell.on('message', function(message) {
-    selwin.webContents.send("renamerres", message);
+    win.webContents.send("functionres", message);
   })
 }
 
+ipcMain.on("opendialog", (event,seriesid) => {
+  opendialog(seriesid);
+});
 
 ipcMain.on('openselector', (event,anime) => {
   selectanime(anime);
@@ -230,18 +237,18 @@ ipcMain.on('id', (event,seriesid) => {
   closewindow();
 });
 
-ipcMain.on('prepare', (event) => {
-  runprepare();
+ipcMain.on('prepare', (event,seriesid) => {
+  runprepare(seriesid);
 });
-ipcMain.on('remover', (event,subtext) => {
-  runremover(subtext);
+ipcMain.on('remover', (event,input) => {
+  runremover(input[0],input[1]);
 });
 
 ipcMain.on('rename', (event,seriesid) => {
   runrenamer(seriesid);
 });
-ipcMain.on('organize', (event) => {
-  runorganizer();
+ipcMain.on('organize', (event,seriesid) => {
+  runorganizer(seriesid);
 });
 ipcMain.on('download', (event,seriesid) => {
   rundownload(seriesid);

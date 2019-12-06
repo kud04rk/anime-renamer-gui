@@ -1,4 +1,5 @@
 export class Animename {
-  isinvalid:boolean;
-  filename:string;
+  isvalid:boolean;
+  src:string;
+  dst:string;
 }

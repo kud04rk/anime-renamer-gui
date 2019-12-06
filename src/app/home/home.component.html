@@ -22,11 +22,13 @@
       <form [formGroup]="selectanime" (ngSubmit)="get_namer(selectanime.value)">
         <article class="media">
           <div class="media-content">
+            <p class="has-text-primary is-light" [hidden]="help">First enter the Anime name</p>
             <input formControlName="animename" class="input is-primary" type="text" [value]="dispanime"
               placeholder="Enter the name of the Series/Anime(be presise Naruto,One Piece etc.)"
               [ngClass]="{'is-danger' : (selectanime.get('animename').errors?.required && (selectanime.get('animename').touched || selectanime.get('animename').dirty))}">
           </div>
           <div class="media-right">
+            <br [hidden]="help">
             <button type="submit" [disabled]="selectanime.invalid" class="button is-info">Search</button>
           </div>
         </article>
@@ -37,12 +39,14 @@
         <div class="media-content">
           <div class="field">
             <div class="control">
+              <p class="has-text-primary is-light" [hidden]="help">Select the directory containing the anime</p>
               <input class="input is-primary" type="text" [value]="directory" readonly placeholder="Locaton of anime">
             </div>
           </div>
         </div>
         <div class="media-right">
-          <button class="button is-info" (click)="get_location()">Browse</button>
+          <br [hidden]="help">
+          <button class="button is-info" [disabled]="locdisable" (click)="get_location()">Browse</button>
         </div>
       </article>
 
@@ -77,51 +81,37 @@
     </div>
     <br>
     <div class="container">
-      <div class="columns">
-        <div class="column is-two-fifths">
-          <div class="table-container">
-            <table class="table is-striped is-fullwidth">
-              <thead>
-                <tr>
-                  <th>Before - filenames</th>
-                </tr>
-                <tr *ngFor="let filename of beforefiles">
-                  <td><p [class.has-text-success] ="!filename.isinvalid" [class.is-light] ="!filename.isinvalid" [hidden]="filename.isinvalid">{{filename.filename}}</p>
-                  <p [class.has-text-danger] ="filename.isinvalid" [class.is-light] ="filename.isinvalid" [hidden]="!filename.isinvalid">{{filename.filename}}</p>
-                  </td>
-                </tr>
-              </thead>
-            </table>
-          </div>
-        </div>
-        <div class="column is-one-fifths">
-          <div class="table-container">
-            <table class="table is-striped is-fullwidth">
-              <thead>
-                <tr>
-                  <th>></th>
-                </tr>
-                <tr *ngFor="let filename of validvideos">
-                  <td>></td>
-                </tr>
-              </thead>
-            </table>
-          </div>
-        </div>
-        <div class="column is-two-fifths">
-          <div class="table-container">
-            <table class="table is-fullwidth">
-              <thead>
-                <tr>
-                  <th>After - filenames(preview)</th>
-                </tr>
-                <tr *ngFor="let filename of validvideos">
-                  <td>{{filename}}</td>
-                </tr>
-              </thead>
-            </table>
-          </div>
-        </div>
+      <div class="table-container">
+        <table class="table is-striped is-fullwidth">
+          <thead>
+            <tr>
+              <th>
+                <p class="has-text-centered">Before - filenames</p>
+              </th>
+              <th>
+                <p class="has-text-centered">></p>
+              </th>
+              <th>
+                <p class="has-text-centered">After - filenames(Preview)</p>
+              </th>
+            </tr>
+            <tr *ngFor="let filename of previewfiles">
+              <td>
+                <p class="has-text-centered" [class.has-text-success]="!filename.isvalid"
+                  [class.is-light]="!filename.isvalid" [hidden]="filename.isvalid">{{filename.src}}</p>
+                <p class="has-text-centered" [class.has-text-danger]="filename.isvalid"
+                  [class.is-light]="filename.isvalid" [hidden]="!filename.isvalid">{{filename.src}}</p>
+              </td>
+              <td>></td>
+              <td>
+                <p class="has-text-centered" [class.has-text-success]="!filename.isvalid"
+                  [class.is-light]="!filename.isvalid" [hidden]="filename.isvalid">{{filename.dst}}</p>
+                <p class="has-text-centered" [class.has-text-danger]="filename.isvalid"
+                  [class.is-light]="filename.isvalid" [hidden]="!filename.isvalid">{{filename.dst}}</p>
+              </td>
+            </tr>
+          </thead>
+        </table>
       </div>
     </div>
   </section>
@@ -140,8 +130,15 @@
             <button type="submit" [disabled]="removetext.invalid" class="button is-info">Remove</button>
           </div>
         </article>
-        </form>
+      </form>
     </div>
   </div>
   <button class="modal-close is-large" (click)="closeremover()" aria-label="close"></button>
+</div>
+<div class="modal" [class.is-active]="progressbar">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <progress class="progress is-large is-info" max="100">60%</progress>
+  </div>
+  <button class="modal-close is-large" (click)="closeprogressbar()" aria-label="close"></button>
 </div>

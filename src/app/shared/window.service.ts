@@ -11,10 +11,15 @@ export class WindowService {
   animelist = new BehaviorSubject<any[]>([{'seriesName':'test','banner':'/banners/posters/78857-1.jpg','overview':'testoverview','id': '126'}]);
   animename;
   seriesidobs = new BehaviorSubject<number>(0);
+  pythonres= new BehaviorSubject<string>('');
 
   constructor() {
     electron.ipcRenderer.once('selecteddir', (event, location) => {
       this.directory.next(location);
+    });
+
+    electron.ipcRenderer.once('functionres', (event, pyres) => {
+      this.pythonres.next(pyres);
     });
 
     electron.ipcRenderer.on('getvalidvideo', (event, validvideos) => {
@@ -31,8 +36,8 @@ export class WindowService {
 
   }
 
-  opendialog() {
-    electron.ipcRenderer.send('opendialog');
+  opendialog(seriesid) {
+    electron.ipcRenderer.send('opendialog',seriesid);
   }
 
   selectanime(animename) {
@@ -43,17 +48,17 @@ export class WindowService {
     electron.ipcRenderer.send('id',seriesid);
     }
 
-    prepare(){
-      electron.ipcRenderer.send('prepare');
+    prepare(seriesid){
+      electron.ipcRenderer.send('prepare',seriesid);
     }
-    remove(subtext){
-      electron.ipcRenderer.send('remover',subtext);
+    remove(input){
+      electron.ipcRenderer.send('remover',input);
     }
     rename(seriesid) {
       electron.ipcRenderer.send('rename',seriesid);
     }
-    organize() {
-      electron.ipcRenderer.send('organize');
+    organize(seriesid) {
+      electron.ipcRenderer.send('organize',seriesid);
     }
     download(seriesid) {
       electron.ipcRenderer.send('download',seriesid);
