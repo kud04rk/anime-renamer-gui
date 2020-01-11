@@ -12,7 +12,7 @@ import { Animename } from '../shared/animename.modal';
 })
 export class HomeComponent implements OnInit {
   directory='';
-  validvideos: string[];
+  validvideos: any [];
   beforefiles;
   selectanime: FormGroup;
   removetext: FormGroup;
@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
   toggleremover=false;
   locdisable =true;
   progressbar=false;
+  previewfiles;
 
   constructor( private window: WindowService, private cdr: ChangeDetectorRef, private fbsearch: FormBuilder, private fbremove: FormBuilder,private toastr: ToastrService ) { }
 
@@ -46,7 +47,7 @@ export class HomeComponent implements OnInit {
     this.window.videos.subscribe((files) =>{
       this.validvideos= files;
       console.log(this.validvideos);
-      //this.checkvalidfiles(this.validvideos);
+      this.progressbar=false;
       this.cdr.detectChanges();
     });
     this.window.seriesidobs.asObservable().subscribe((result) => {
@@ -63,7 +64,7 @@ export class HomeComponent implements OnInit {
     });
    }
   checkvalidfiles(validvideos: string[]) {
-    this.beforefiles=validvideos.map(file => {
+    this.previewfiles=validvideos.map(file => {
       const temp=file.split('.');
       return{
         isvalid: isNaN(Number(temp[0])),
@@ -87,7 +88,8 @@ export class HomeComponent implements OnInit {
     if (this.seriesid ==0){
       this.toastr.error('error','please select series');
     }else{
-    this.window.opendialog(this.seriesid);}
+    this.window.opendialog(this.seriesid);
+    this.progressbar=true;}
     }
 
     get_namer(name) {
@@ -97,11 +99,12 @@ export class HomeComponent implements OnInit {
     }
 
     prepare(){
-      if(this.directory=''){
+      if(this.directory==''){
         this.toastr.error('error', 'invalid directory');
       }
       else{
         this.window.prepare(this.seriesid);
+        this.progressbar=true;
       }
     }
     remove(){
@@ -109,18 +112,22 @@ export class HomeComponent implements OnInit {
     }
     removetextfn(value){
       this.toggleremover=false;
+      console.log(value.subtext);
       const input=[value.subtext,this.seriesid];
       this.window.remove(input);
+      this.progressbar=true;
     }
     rename() {
-
       this.window.rename(this.seriesid);
+      this.progressbar=true;
     }
     organize() {
       this.window.organize(this.seriesid);
+      this.progressbar=true;
     }
     download() {
       this.window.download(this.seriesid);
+      this.progressbar=true;
     }
 
     helptoggle() {
@@ -129,6 +136,10 @@ export class HomeComponent implements OnInit {
 
     closeprogressbar(){
       this.progressbar=false;
+    }
+    
+    closeremover() {
+      this.toggleremover=false;
     }
 
 }

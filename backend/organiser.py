@@ -38,7 +38,7 @@ def move_files():
 
         else:
             invalidfiles.append(file)
-    return
+    return print('done')
 
 def getextensions(filename):
     """

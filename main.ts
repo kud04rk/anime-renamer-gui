@@ -165,7 +165,7 @@ function runrenamer(seriesid) {
     args : [seriesid]
   }
 
-  let pyshell = new PythonShell('reanmer.py', options);
+  let pyshell = new PythonShell('renamer.py', options);
 
   pyshell.on('message', function(message) {
     win.webContents.send("functionres", message);
@@ -188,14 +188,14 @@ function runprepare(seriesid) {
 function runremover(subtext,seriesid) {
   var options = {
     scriptPath : path.join(__dirname, '/backend/'),
-    args : [subtext,seriesid]
+    args : [subtext]
   }
 
   let pyshell = new PythonShell('remover.py', options);
 
   pyshell.on('message', function(message) {
     win.webContents.send("functionres", message);
-    sendvalidfiles(seriesid)
+    sendvalidfiles(seriesid);
   })
 }
 function runorganizer(seriesid) {
@@ -203,11 +203,11 @@ function runorganizer(seriesid) {
     scriptPath : path.join(__dirname, '/backend/')
   }
 
-  let pyshell = new PythonShell('oraganiser.py', options);
+  let pyshell = new PythonShell('organiser.py', options);
 
   pyshell.on('message', function(message) {
     win.webContents.send("functionres", message);
-    sendvalidfiles(seriesid)
+    sendvalidfiles(seriesid);
   })
 }
 function rundownload(seriesid) {
@@ -220,6 +220,7 @@ function rundownload(seriesid) {
 
   pyshell.on('message', function(message) {
     win.webContents.send("functionres", message);
+    sendvalidfiles(seriesid);
   })
 }
 

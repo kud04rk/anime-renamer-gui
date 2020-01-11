@@ -1,5 +1,6 @@
 from os import listdir
 from os.path import isfile, join
+import sys
 from os import getcwd, rename
 
 from pip._vendor.distlib.compat import raw_input
@@ -15,13 +16,12 @@ def scancurrentfolder():
     :return:
     """
     """need to go into config file supported extensions"""
-    exts = ['.mkv', '.mp4', '.avi', '.flv', '.mpg', '.mpeg', '.wmv', '.webm', '.vob', '.mov', '.3gp', '.ogv']
-    str_to_replace = raw_input("string to be removed from filename: ")
+    exts = ['.mkv', '.mp4', '.avi', '.flv', '.mpg', '.mpeg', '.wmv', '.webm', '.vob', '.mov', '.3gp', '.ogv']    
     allfiles = [f for f in listdir('.') if isfile(join('.', f))]
     for file in allfiles:
         if getfileextension(file) in exts:
             src = getcwd() + '/' + str(file)
-            outfilename=(str(file).replace(str(str_to_replace), '')).strip()
+            outfilename=(str(file).replace(str(sys.argv[1]), '')).strip()
             dst = getcwd() + '/' + outfilename
             rename(src, dst)
 
@@ -29,7 +29,7 @@ def scancurrentfolder():
             invalidfiles.append(file)
 
 
-    return
+    return print('done')
 
 
 def getfileextension(filename):
@@ -41,4 +41,7 @@ def getfileextension(filename):
     a = filename.rfind('.')
     return filename[a:]
 
-scancurrentfolder()
+if len(sys.argv) > 1:
+    scancurrentfolder()
+else:
+    blah = ''

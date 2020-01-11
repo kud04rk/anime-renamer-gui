@@ -22,8 +22,7 @@ def downloadseriesdata(seriesid):
     info = show.info()
     title = info['seriesName']
     plot = info['overview']
-    banner = info['banner']
-    print(title, plot, banner)
+    banner = info['banner']    
     poster = show.Images.poster()[0]['fileName']
     fanart = show.Images.fanart()[0]['fileName']
     make_nfo_file_series(title, plot)
@@ -88,8 +87,7 @@ def make_nfo_file_series(title_text, plot_text):
     mydata = ET.tostring(tvshow)
     xml = xmlpretty.parseString(mydata)
     xml_pretty_str = xml.toprettyxml()
-    xmlfinal = xml_pretty_str.replace('<?xml version="1.0" ?>', '')
-    print(xmlfinal)
+    xmlfinal = xml_pretty_str.replace('<?xml version="1.0" ?>', '')    
     myfile = open(title_text + ".nfo", "w")
     myfile.write(xmlfinal)
     return
@@ -97,8 +95,6 @@ def make_nfo_file_series(title_text, plot_text):
 
 def downlaod_file_images(img_url, oufilename):
     """this function will downalod the image given url"""
-    print(image_basepath + img_url)
-    print(oufilename)
     r = requests.get(image_basepath + img_url, stream=True)
     with open(oufilename + ".jpg", 'wb') as f:
         f.write(r.content)
@@ -131,7 +127,7 @@ def main():
     downloadseriesdata(sys.argv[1])
     download_episode_data(sys.argv[1])
 
-    return
+    return print('done')
 
 
 def mainpackage(seriesid):

@@ -33,10 +33,7 @@ def main(path=getcwd()):
     scanfolder(path)
     match_filename(sys.argv[1])
     directorylist(path)
-    validpreview.append(invalidfiles)
-    validpreview.append(dirlist)
-    preview=json.dumps(validpreview, default=obj_to_dict)
-    print(preview)
+    print(json.dumps(validpreview, default=obj_to_dict))
     return
 
 def obj_to_dict(obj):
@@ -46,7 +43,7 @@ def directorylist(path):
     """scans directory for sub directories"""
     onlyfiles = [f for f in listdir('.') if isdir(join('.', f))]
     for f in onlyfiles:
-        dirlist.append(preview(False, 'Directory-'+str(f), 'Directory-'+str(f)))
+        validpreview.append(preview(False, 'Dir-'+str(f), 'Dir-'+str(f)))
     return
 
 def scanfolder(path):
@@ -60,15 +57,18 @@ def scanfolder(path):
     allfiles = [f for f in listdir(path) if isfile(join('.', f))]
     for file in allfiles:
         if getextension(file) in exts:
-            try:
-                validfiles.append(sfilenames(int(file.replace(getextension(file), '')), str(file), getextension(file)))
-            except:
-                continue
-
+            if not file.replace(getextension(file), '').isnumeric():
+                validpreview.append(preview(False, str(file), str(file)))
+            else:
+                try:
+                    validfiles.append(
+                        sfilenames(int(file.replace(getextension(file), '')), str(file), getextension(file)))
+                except:
+                    continue
 
         else:
-            invalidfiles.append(preview(False, str(file), str(file)))
-    
+            validpreview.append(preview(False, str(file), str(file)))
+
     return
 
 
@@ -100,7 +100,7 @@ def match_filename(seriesid):
                     outfilename = make_filename(title, s['airedSeason'], s['airedEpisodeNumber'],
                                                 s['episodeName'],
                                                 s['absoluteNumber'])
-                    validpreview.append(preview(True, k.filename, outfilename+k.extension))
+                    validpreview.append(preview(True, k.filename, outfilename+k.extension))             
             except IOError:
                 print(IOError)
                 continue

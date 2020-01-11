@@ -28,7 +28,7 @@ def main(path=getcwd()):
     scanfolder(path)
     match_filename(sys.argv[1])
 
-    return
+    return print('done')
 
 
 def mainpackage(seriesid):
@@ -88,11 +88,6 @@ def get_series_deatils(seriesid):
     """
     show = tvdb.Series(seriesid)
     info = show.info()
-    linesep()
-    print('Series name       : ', info['seriesName'])
-    print('Overview          : ', info['overview'])
-    linesep()
-
     return
 
 
@@ -142,9 +137,8 @@ def make_filename(seriesname, seasonnumber, seasonepisode, episodename, episoden
 def linesep():
     """
     this is used to drawline in the terminal window
-    :return:
-    """
-    print("-" * 100)
+    :return:    """
+    
     return
 
 

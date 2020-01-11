@@ -73,7 +73,7 @@
           <p class="has-text-primary is-light" [hidden]="help">Oraganize files into season folders</p>
         </div>
         <div class="column is-one-fifths">
-          <button class="button is-success is-light" [disabled]="disabledbuttons" (click)="Download()">Download</button>
+          <button class="button is-success is-light" [disabled]="disabledbuttons" (click)="download()">Download</button>
           <p class="has-text-success is-light" [hidden]="help">Downloads metadata for anime</p>
         </div>
 
@@ -95,19 +95,19 @@
                 <p class="has-text-centered">After - filenames(Preview)</p>
               </th>
             </tr>
-            <tr *ngFor="let filename of previewfiles">
+            <tr *ngFor="let filename of validvideos">
               <td>
-                <p class="has-text-centered" [class.has-text-success]="!filename.isvalid"
-                  [class.is-light]="!filename.isvalid" [hidden]="filename.isvalid">{{filename.src}}</p>
-                <p class="has-text-centered" [class.has-text-danger]="filename.isvalid"
+                <p class="has-text-centered" [class.has-text-success]="filename.isvalid"
                   [class.is-light]="filename.isvalid" [hidden]="!filename.isvalid">{{filename.src}}</p>
+                <p class="has-text-centered" [class.has-text-danger]="!filename.isvalid"
+                  [class.is-light]="!filename.isvalid" [hidden]="filename.isvalid">{{filename.src}}</p>
               </td>
-              <td>></td>
+              <td class="has-text-centered">></td>
               <td>
-                <p class="has-text-centered" [class.has-text-success]="!filename.isvalid"
-                  [class.is-light]="!filename.isvalid" [hidden]="filename.isvalid">{{filename.dst}}</p>
-                <p class="has-text-centered" [class.has-text-danger]="filename.isvalid"
+                <p class="has-text-centered" [class.has-text-success]="filename.isvalid"
                   [class.is-light]="filename.isvalid" [hidden]="!filename.isvalid">{{filename.dst}}</p>
+                <p class="has-text-centered" [class.has-text-danger]="!filename.isvalid"
+                  [class.is-light]="!filename.isvalid" [hidden]="filename.isvalid">{{filename.dst}}</p>
               </td>
             </tr>
           </thead>

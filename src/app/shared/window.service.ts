@@ -7,23 +7,23 @@ const electron = (<any>window).require('electron');
 })
 export class WindowService {
   directory = new BehaviorSubject<string>('');
-  videos = new BehaviorSubject<string[]>([]);
-  animelist = new BehaviorSubject<any[]>([{'seriesName':'test','banner':'/banners/posters/78857-1.jpg','overview':'testoverview','id': '126'}]);
+  videos = new BehaviorSubject<any[]>([]);
+  animelist = new BehaviorSubject<any[]>([{'seriesName':'pls..Wait','banner':'/banners/posters/78857-1.jpg','overview':'Loading','id': '126'}]);
   animename;
   seriesidobs = new BehaviorSubject<number>(0);
   pythonres= new BehaviorSubject<string>('');
 
   constructor() {
-    electron.ipcRenderer.once('selecteddir', (event, location) => {
+    electron.ipcRenderer.on('selecteddir', (event, location) => {
       this.directory.next(location);
     });
 
-    electron.ipcRenderer.once('functionres', (event, pyres) => {
+    electron.ipcRenderer.on('functionres', (event, pyres) => {
       this.pythonres.next(pyres);
     });
 
     electron.ipcRenderer.on('getvalidvideo', (event, validvideos) => {
-      this.videos.next(validvideos);
+      this.videos.next(JSON.parse(validvideos));
     });
 
     electron.ipcRenderer.on('animelist', (event, anime) => {
