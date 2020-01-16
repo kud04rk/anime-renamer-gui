@@ -41,7 +41,7 @@ function createWindow(): BrowserWindow {
   }
 
   if (serve) {
-    win.webContents.openDevTools();
+    //win.webContents.openDevTools();
   }
 
   // Emitted when the window is closed.
@@ -152,7 +152,8 @@ pyshell.on('message', function(message) {
   selwin.webContents.send("animelist", message);
 })
 if(serve){
-  selwin.webContents.openDevTools();}
+  //selwin.webContents.openDevTools();
+}
 }
 
 function closewindow() {
