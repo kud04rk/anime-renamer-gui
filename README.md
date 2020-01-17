@@ -48,14 +48,21 @@ Go to python home page and install python
 https://www.python.org/downloads/release/python-376/
 ```
 5)
+run both
 ```
 pip install anime-renamer
+```
+```
+pip3 install anime-renamer
 ```
 6)
 ```
 npm start
 ```
 
+7)
+At this point the gui must open and you can use it 
+Tested on linux and windows
 
 
 # HELP
