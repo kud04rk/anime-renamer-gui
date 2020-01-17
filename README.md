@@ -49,6 +49,10 @@ https://www.python.org/downloads/release/python-376/
 ```
 5)
 ```
+pip install anime-renamer
+```
+6)
+```
 npm start
 ```
 
