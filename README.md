@@ -2,7 +2,7 @@
 
 Rename anime videos to oraganize the video.
 
-![](https://github.com/smsriharsha/anime-renamer-gui/blob/master/anime-renamer-gui%20videos%20and%20pics/animerenamer.gif)
+![](https://github.com/smsriharsha/anime-renamer-gui/blob/master/anime-renamer-gui%20videos%20and%20pics/animerename.gif)
 
 # pics
 
