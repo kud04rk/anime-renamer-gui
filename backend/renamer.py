@@ -131,7 +131,7 @@ def make_filename(seriesname, seasonnumber, seasonepisode, episodename, episoden
 
     finalname = ''.join(name)
 
-    return finalname.replace(':', '!').replace('?', '')
+    return finalname.replace(':', '!').replace('?', '').replace('/', '')
 
 
 def linesep():
