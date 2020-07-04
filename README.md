@@ -2,6 +2,14 @@
 
 Rename anime videos to oraganize the video.
 
+I have personally used this for many projects.
+1)Naruto
+2)One Piece
+3)Gintama
+4)Angel Beats
+5)Promised neverland
+6)Deamon Slayer etc..
+
 ![](https://github.com/smsriharsha/anime-renamer-gui/blob/master/anime-renamer-gui%20videos%20and%20pics/animerename.gif)
 
 # pics
